@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   COLD DESIGN — Biometric Labs design language.
+   Near-black + white + a single orange accent. No blue.
+   ============================================================ */
+
+@theme {
+  --color-ink: #080808;
+  --color-ink-2: #101012;
+  --color-ink-3: #18181b;
+  --color-paper: #ffffff;
+  --color-paper-2: #f6f6f4;
+  --color-paper-3: #eeedea;
+  --color-line: #e6e6e2;
+  --color-line-dark: #232327;
+
+  --color-muted: #6a6a66;
+  --color-muted-dark: #97978f;
+
+  --color-flame: #ff6703;
+  --color-flame-deep: #e65a00;
+  --color-flame-soft: #ff8a3d;
+
+  --font-display: var(--font-onest);
+  --font-sans: var(--font-manrope);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: var(--color-ink);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: clip;
 }
+
+::selection { background: var(--color-flame); color: #fff; }
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.022em;
+}
+
+/* Grain overlay — fixed, non-interactive */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-flame);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Edge-fade mask helper for marquees */
+.edge-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 42s linear infinite; }
+
+@keyframes pulse-node {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+.animate-node { animation: pulse-node 2.6s var(--ease-out-expo) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee, .animate-node { animation: none; }
+}
+
+/* Thin hairline divider that respects current surface */
+.rule { height: 1px; background: currentColor; opacity: 0.1; }
