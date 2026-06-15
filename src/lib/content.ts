@@ -296,8 +296,7 @@ export const TEAM: {
     role: "Director AI · методология и техника",
     body: "60+ AI/ML-проектов, команды до 30 человек. «Актион», М.Видео-Эльдорадо (Lead Data Scientist), Лаборатория машинного интеллекта МФТИ, Тинькофф, Лаборатория Касперского.",
     initials: "ВХ",
-    // Положите фото в public/team/khavanskikh.jpg и раскомментируйте:
-    // photo: "/team/khavanskikh.jpg",
+    photo: "/team/khavanskikh.jpg",
   },
 ];
 
